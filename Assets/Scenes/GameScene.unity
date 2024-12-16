@@ -1100,7 +1100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1305969372}
   playerPrefab: {fileID: 681690535255154763, guid: 09c5433ada9d04c4da51b05fbd733d7e, type: 3}
-  HousePrefab: {fileID: 1300434696829077230, guid: 1cd4906dfef3aa4479833b07703d67a8, type: 3}
+  housePrefab: {fileID: 1300434696829077230, guid: 1cd4906dfef3aa4479833b07703d67a8, type: 3}
   groundTile: {fileID: 11400000, guid: e4065c65b6d9d2949b97f93422aa384b, type: 2}
   waterTile: {fileID: 11400000, guid: 4710b3b85d5163c4c99db0dbf5ff670a, type: 2}
 --- !u!1 &1192527445
@@ -1701,8 +1701,8 @@ MonoBehaviour:
   sand: {fileID: 11400000, guid: c25fd5f350640064a8235b939b4bf6eb, type: 2}
   gress: {fileID: 11400000, guid: e4065c65b6d9d2949b97f93422aa384b, type: 2}
   forest: {fileID: 11400000, guid: aeca4e6f9fd9aa842a894c358e678031, type: 2}
-  mapScale: 0.01
-  mapSize: 700
+  mapScale: 0.008
+  mapSize: 750
   octaves: 5
   playerSpwan: {fileID: 1076804818}
 --- !u!4 &1614585844

@@ -7,7 +7,7 @@ public class PlayerSpwan : MonoBehaviour
 {
     public Tilemap tilemap;
     public GameObject playerPrefab;
-    public GameObject HousePrefab;
+    public GameObject housePrefab;
     public TileBase groundTile;
     public TileBase waterTile;
 
@@ -17,32 +17,37 @@ public class PlayerSpwan : MonoBehaviour
     {
         if (tilemap == null || playerPrefab == null || groundTile == null)
         {
-            Debug.LogError("Tilemap, PlayerPrefab 또는 GroundTile이 설정되지 않았습니다.");
             return;
         }
 
         Vector3Int spawnPosition = FindRandomGroundTile();
         if (spawnPosition == Vector3Int.zero)
         {
-            Debug.LogError("타일맵에 땅 타일이 없습니다.");
             return;
         }
 
-
         Vector3 worldPosition = tilemap.CellToWorld(spawnPosition) + new Vector3(0.5f, 0.5f, 0);
         Instantiate(playerPrefab, worldPosition, Quaternion.identity);
+
+        // 집은 플레이어 스폰 위치에서 약간 떨어진 위치에 생성
         worldPosition.x += 10;
         worldPosition.y += 10;
-        Instantiate(HousePrefab, worldPosition, Quaternion.identity);
+        Instantiate(housePrefab, worldPosition, Quaternion.identity);
     }
+
     private Vector3Int FindRandomGroundTile()
     {
         List<Vector3Int> groundTiles = new List<Vector3Int>();
-        BoundsInt bounds = tilemap.cellBounds;
 
-        for (int x = bounds.xMin; x < bounds.xMax; x++)
+        // 지정된 좌표 범위
+        int xMin = 147;
+        int xMax = 580;
+        int yMin = 84;
+        int yMax = 600;
+
+        for (int x = xMin; x <= xMax; x++)
         {
-            for (int y = bounds.yMin; y < bounds.yMax; y++)
+            for (int y = yMin; y <= yMax; y++)
             {
                 Vector3Int position = new Vector3Int(x, y, 0);
                 TileBase tile = tilemap.GetTile(position);
@@ -57,11 +62,9 @@ public class PlayerSpwan : MonoBehaviour
         if (groundTiles.Count > 0)
         {
             Vector3Int randomGround = groundTiles[Random.Range(0, groundTiles.Count)];
-            Debug.Log($"랜덤으로 선택된 땅 위치: {randomGround}");
             return randomGround;
         }
 
-        Debug.LogError("땅 타일이 없습니다.");
-        return Vector3Int.zero;
+        return Vector3Int.zero; // GroundTile이 없으면 기본값 반환
     }
 }
