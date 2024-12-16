@@ -8,8 +8,11 @@ public class PlayerSpwan : MonoBehaviour
     public Tilemap tilemap; // 타일맵 참조
     public GameObject playerPrefab; // 플레이어 프리팹
     public TileBase groundTile; // 땅 타일
+    public TileBase waterTile; // 바다 타일
 
-    private void Start()
+    private List<Vector3Int> groundTiles = new List<Vector3Int>(); // 땅 타일 위치 저장
+
+    public void Spwan()
     {
         if (tilemap == null || playerPrefab == null || groundTile == null)
         {
@@ -28,15 +31,12 @@ public class PlayerSpwan : MonoBehaviour
         // 월드 좌표로 변환 후 플레이어 생성
         Vector3 worldPosition = tilemap.CellToWorld(spawnPosition) + new Vector3(0.5f, 0.5f, 0); // 타일 중심 보정
         Instantiate(playerPrefab, worldPosition, Quaternion.identity);
-
-        Debug.Log($"플레이어가 생성된 위치: {spawnPosition} (월드 좌표: {worldPosition})");
     }
-
     private Vector3Int FindRandomGroundTile()
     {
-        // 타일맵의 모든 땅 타일 위치를 찾음
-        BoundsInt bounds = tilemap.cellBounds;
+        // 땅 타일 위치 저장
         List<Vector3Int> groundTiles = new List<Vector3Int>();
+        BoundsInt bounds = tilemap.cellBounds;
 
         for (int x = bounds.xMin; x < bounds.xMax; x++)
         {
@@ -61,7 +61,7 @@ public class PlayerSpwan : MonoBehaviour
             return randomGround;
         }
 
-        // 땅 타일이 없으면 Vector3Int.zero 반환
+        // 땅 타일이 없으면 기본값 반환
         Debug.LogError("땅 타일이 없습니다.");
         return Vector3Int.zero;
     }

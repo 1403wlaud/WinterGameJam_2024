@@ -14,17 +14,15 @@ public class RandomMapGenerater : MonoBehaviour
     [SerializeField] private int mapSize;
     [SerializeField] private int octaves; //≥Î¿Ã¡Ó ¡ﬂ√∏ »Ωºˆ
 
+    public PlayerSpwan playerSpwan;
+
     private float seed;
 
     private async void Awake()
     {
-
         seed = Random.Range(0, 10000f);
-
         var noiseArr = await Task.Run(GenerateNoise);
-
         SettingTileMap(noiseArr);
-
     }
 
     private float[,] GenerateNoise()
@@ -109,9 +107,9 @@ public class RandomMapGenerater : MonoBehaviour
                 tileMap.SetTile(point, GetTileByHight(noiseArr[x, y]));
 
             }
-
         }
 
+        playerSpwan.Spwan();
     }
 
     private TileBase GetTileByHight(float hight)
