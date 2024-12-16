@@ -10,6 +10,9 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
+            if (currentItem == null) return;
+
+            // 아이템 소비 및 currentItem 초기화
             currentItem.OnConsume(gameObject);
             currentItem = null;
         }
@@ -22,6 +25,7 @@ public class PlayerInteraction : MonoBehaviour
             currentItem = item;
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Iitem>(out var item))

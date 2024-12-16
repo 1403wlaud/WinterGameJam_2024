@@ -14,7 +14,9 @@ public class Item : ScriptableObject
     [SerializeField] private string itemName;
     [SerializeField] private Sprite itemImage;
     [SerializeField] private int ItemPrice;
+    [SerializeField] private string ItemExample;
 
+    public string Item_Example => ItemExample;
     public int Item_Price => ItemPrice;
     public ItemType Item_Type => type;
     public string Item_Name => itemName;

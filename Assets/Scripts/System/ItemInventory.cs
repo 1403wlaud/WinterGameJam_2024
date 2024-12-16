@@ -5,13 +5,10 @@ using UnityEngine;
 public class ItemInventory : MonoBehaviour
 {
     public List<Item> items;
+    public SlotManager slotManager;
 
     private void Update()
     {
-        foreach (var item in items)
-        {
-            if (item == null) return;
-            Debug.Log(item.name);
-        }
+        
     }
 }
