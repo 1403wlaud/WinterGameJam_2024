@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Potato
   m_EditorClassIdentifier: 
   type: 2
-  itemName: 
+  itemName: Potato
   itemImage: {fileID: 0}
-  ItemPrice: 0
-  ItemExample: 
-  SellingPrice: 0
+  ItemPrice: 30
+  ItemExample: "\uAC10\uC790"
+  SellingPrice: 50

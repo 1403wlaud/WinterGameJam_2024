@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SpinachSeed
   m_EditorClassIdentifier: 
   type: 0
-  itemName: 
+  itemName: SpinachSeed
   itemImage: {fileID: 0}
-  ItemPrice: 0
-  ItemExample: 
-  TimeTaken: 0
+  ItemPrice: 130
+  ItemExample: "\uC2DC\uAE08\uCE58\uC528\uC557"
+  TimeTaken: 8

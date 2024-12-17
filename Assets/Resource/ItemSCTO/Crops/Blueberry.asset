@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Blueberry
   m_EditorClassIdentifier: 
   type: 2
-  itemName: 
+  itemName: Blueberry
   itemImage: {fileID: 0}
-  ItemPrice: 0
-  ItemExample: 
-  SellingPrice: 0
+  ItemPrice: 80
+  ItemExample: "\uBE14\uB8E8\uBCA0\uB9AC"
+  SellingPrice: 120

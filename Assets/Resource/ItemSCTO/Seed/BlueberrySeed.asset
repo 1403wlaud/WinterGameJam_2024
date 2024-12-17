@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a0ae91cd1b731a74d940ebe362268aef, type: 3}
-  m_Name: BluberrySeed
+  m_Name: BlueberrySeed
   m_EditorClassIdentifier: 
   type: 0
-  itemName: 
+  itemName: BlueberrySeed
   itemImage: {fileID: 0}
-  ItemPrice: 0
-  ItemExample: 
-  TimeTaken: 0
+  ItemPrice: 80
+  ItemExample: "\uBE14\uB8E8\uBCA0\uB9AC\uC528\uC557"
+  TimeTaken: 6

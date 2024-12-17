@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: CarrotSeed
   m_EditorClassIdentifier: 
   type: 0
-  itemName: 
+  itemName: CarrotSeed
   itemImage: {fileID: 0}
-  ItemPrice: 0
-  ItemExample: 
-  TimeTaken: 0
+  ItemPrice: 40
+  ItemExample: "\uB2F9\uADFC\uC528\uC557"
+  TimeTaken: 5
