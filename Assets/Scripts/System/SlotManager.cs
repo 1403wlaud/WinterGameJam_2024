@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class SlotManager : MonoBehaviour
 {
-    public ItemInventory inventory; // 아이템 인벤토리
-    public Slot[] slots; // 슬롯 배열
+    public ItemInventory inventory; 
+    public Slot[] slots;
 
     public void AddItemToInventory(Item newItem)
     {
