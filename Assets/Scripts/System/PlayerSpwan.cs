@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class PlayerSpwan : MonoBehaviour
 {
@@ -30,7 +31,13 @@ public class PlayerSpwan : MonoBehaviour
         Instantiate(playerPrefab, worldPosition, Quaternion.identity);
 
         // 집은 플레이어 스폰 위치에서 약간 떨어진 위치에 생성
-        worldPosition.x += 10;
+        int randomIndex = Random.Range(0, 2);
+        int value;
+        if (randomIndex == 0)
+            value = 1;
+        else
+            value = -1;
+        worldPosition.x += 10*value;
         worldPosition.y += 10;
         Instantiate(housePrefab, worldPosition, Quaternion.identity);
     }
@@ -40,10 +47,10 @@ public class PlayerSpwan : MonoBehaviour
         List<Vector3Int> groundTiles = new List<Vector3Int>();
 
         // 지정된 좌표 범위
-        int xMin = 147;
-        int xMax = 580;
-        int yMin = 84;
-        int yMax = 600;
+        int xMin = 145;
+        int xMax = 480;
+        int yMin = 132;
+        int yMax = 475;
 
         for (int x = xMin; x <= xMax; x++)
         {

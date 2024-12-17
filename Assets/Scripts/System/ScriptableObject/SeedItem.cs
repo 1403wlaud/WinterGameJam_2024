@@ -5,5 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SeedItem", menuName = "Item/Seed")]
 public class SeedItem : Item
 {
-    
+    [SerializeField] private int TimeTaken;
+    public int Seed_TimeTaken=>TimeTaken;
 }

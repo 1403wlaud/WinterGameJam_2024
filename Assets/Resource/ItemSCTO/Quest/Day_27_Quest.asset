@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22e767a3a9b8c724bb8779c80c688da0, type: 3}
+  m_Name: Day_27_Quest
+  m_EditorClassIdentifier: 
+  Day: 27
+  NeedObj: {fileID: 11400000, guid: 38e7b759fbe677947b208390373cd425, type: 2}
+  NeedItemCount: 5
+  RewardMoney: 550
+  RewardItem: {fileID: 0}
+  ItemCount: 0
+  NeedObj2: {fileID: 11400000, guid: b95d0122ce76450459e12b939bc53b9b, type: 2}
+  NeedItemCount2: 5

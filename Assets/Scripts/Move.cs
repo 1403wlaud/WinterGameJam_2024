@@ -25,12 +25,12 @@ public class Move : MonoBehaviour
         moveVelocity = moveInput.normalized * speed;
         Vector3 currentPosition = transform.position;
 
-        // 제한된 영역으로 위치를 고정
-        currentPosition.x = Mathf.Clamp(currentPosition.x, minX, maxX);
-        currentPosition.y = Mathf.Clamp(currentPosition.y, minY, maxY);
+        //// 제한된 영역으로 위치를 고정
+        //currentPosition.x = Mathf.Clamp(currentPosition.x, minX, maxX);
+        //currentPosition.y = Mathf.Clamp(currentPosition.y, minY, maxY);
 
-        // 업데이트된 위치를 적용
-        transform.position = currentPosition;
+        //// 업데이트된 위치를 적용
+        //transform.position = currentPosition;
     }
 
     private void FixedUpdate()
