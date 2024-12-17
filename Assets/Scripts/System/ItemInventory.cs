@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemInventory : MonoBehaviour
 {
-    public List<Item> items;
+    public List<ItemObject> items;
     public SlotManager slotManager;
 
     private void Update()

@@ -18,3 +18,4 @@ MonoBehaviour:
   ItemPrice: 50
   ItemExample: "\uC625\uC218\uC218\uC528\uC557"
   TimeTaken: 5
+  itemCrops: 1

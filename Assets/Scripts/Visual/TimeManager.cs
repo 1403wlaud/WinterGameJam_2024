@@ -72,7 +72,7 @@ public class TimeManager : MonoBehaviour
         if (displayHours == 0) displayHours = 12;
 
         // 시간 문자열 업데이트
-        timeDisplay.text = string.Format("{0:00}:{1:00} {2}", displayHours, gameMinutes, period);
+        timeDisplay.text = string.Format("{0:00} {1:00} {2}", displayHours, gameMinutes, period);
     }
 
     void UpdateDayDisplay()

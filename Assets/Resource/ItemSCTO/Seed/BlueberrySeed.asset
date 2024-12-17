@@ -18,3 +18,4 @@ MonoBehaviour:
   ItemPrice: 80
   ItemExample: "\uBE14\uB8E8\uBCA0\uB9AC\uC528\uC557"
   TimeTaken: 6
+  itemCrops: 3

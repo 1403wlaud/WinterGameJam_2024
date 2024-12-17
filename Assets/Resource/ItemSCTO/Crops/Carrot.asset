@@ -9,12 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8bd867a632add64191f015a8fc9ce91, type: 3}
+  m_Script: {fileID: 11500000, guid: a0ae91cd1b731a74d940ebe362268aef, type: 3}
   m_Name: Carrot
   m_EditorClassIdentifier: 
+  crops: 2
   type: 2
   itemName: Carrot
   itemImage: {fileID: 0}
   ItemPrice: 40
   ItemExample: "\uB2F9\uADFC"
+  TimeTaken: 0
   SellingPrice: 60

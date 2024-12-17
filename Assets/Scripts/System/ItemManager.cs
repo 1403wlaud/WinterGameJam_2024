@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour, Iitem
 {
-    [SerializeField] private Item item;
+    [SerializeField] private ItemObject item;
 
     void Iitem.OnConsume(GameObject pUser)
     {
