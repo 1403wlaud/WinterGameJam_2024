@@ -14,7 +14,7 @@ public class PlayerSpwan : MonoBehaviour
 
     private List<Vector3Int> groundTiles = new List<Vector3Int>();
 
-    public void Spwan()
+    public void Spawn()
     {
         if (tilemap == null || playerPrefab == null || groundTile == null)
         {
@@ -27,34 +27,36 @@ public class PlayerSpwan : MonoBehaviour
             return;
         }
 
-        Vector3 worldPosition = tilemap.CellToWorld(spawnPosition) + new Vector3(0.5f, 0.5f, 0);
+        // 타일맵의 셀 크기 가져오기
+        Vector3 cellSize = tilemap.cellSize;
+
+        // 셀 위치를 월드 위치로 변환하고 셀 크기의 절반을 더하여 중앙에 배치
+        Vector3 worldPosition = tilemap.CellToWorld(spawnPosition) + new Vector3(cellSize.x * 0.5f, cellSize.y * 0.5f, 0);
         Instantiate(playerPrefab, worldPosition, Quaternion.identity);
 
         // 집은 플레이어 스폰 위치에서 약간 떨어진 위치에 생성
         int randomIndex = Random.Range(0, 2);
-        int value;
-        if (randomIndex == 0)
-            value = 1;
-        else
-            value = -1;
-        worldPosition.x += 10*value;
-        worldPosition.y += 10;
-        Instantiate(housePrefab, worldPosition, Quaternion.identity);
+        int value = (randomIndex == 0) ? 1 : -1;
+        Vector3 housePosition = worldPosition + new Vector3(10 * value, 10, 0);
+        Instantiate(housePrefab, housePosition, Quaternion.identity);
     }
 
     private Vector3Int FindRandomGroundTile()
     {
         List<Vector3Int> groundTiles = new List<Vector3Int>();
 
-        // 지정된 좌표 범위
-        int xMin = 145;
-        int xMax = 480;
-        int yMin = 132;
-        int yMax = 475;
+        // 타일맵의 셀 경계 가져오기
+        BoundsInt bounds = tilemap.cellBounds;
 
-        for (int x = xMin; x <= xMax; x++)
+        // 스폰 가능한 범위 설정 (예: 중앙 50% 영역)
+        int xRangeMin = bounds.xMin + (bounds.xMax - bounds.xMin) / 4;
+        int xRangeMax = bounds.xMax - (bounds.xMax - bounds.xMin) / 4;
+        int yRangeMin = bounds.yMin + (bounds.yMax - bounds.yMin) / 4;
+        int yRangeMax = bounds.yMax - (bounds.yMax - bounds.yMin) / 4;
+
+        for (int x = xRangeMin; x <= xRangeMax; x++)
         {
-            for (int y = yMin; y <= yMax; y++)
+            for (int y = yRangeMin; y <= yRangeMax; y++)
             {
                 Vector3Int position = new Vector3Int(x, y, 0);
                 TileBase tile = tilemap.GetTile(position);

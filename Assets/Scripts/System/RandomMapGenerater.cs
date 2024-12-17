@@ -124,7 +124,7 @@ public class RandomMapGenerater : MonoBehaviour
         // lawnTiles 위치에 새로운 오브젝트 생성
         SpawnObjectsAtRandomPositions(newObjects, newObjectPositions, maxNewObjects);
 
-        playerSpwan.Spwan();
+        playerSpwan.Spawn();
     }
 
     private TileBase GetTileByHight(float hight)
@@ -182,7 +182,7 @@ public class RandomMapGenerater : MonoBehaviour
             GameObject prefab = objects[Random.Range(0, objects.Length)];
 
             // 오브젝트 생성
-            Instantiate(prefab, worldPosition, Quaternion.identity);
+            Instantiate(prefab, worldPosition, Quaternion.identity,tileMap.transform);
         }
     }
 }
