@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ae91cd1b731a74d940ebe362268aef, type: 3}
   m_Name: SpinachSeed
   m_EditorClassIdentifier: 
+  crops: 4
   type: 0
   itemName: SpinachSeed
   itemImage: {fileID: 0}
   ItemPrice: 130
   ItemExample: "\uC2DC\uAE08\uCE58\uC528\uC557"
   TimeTaken: 8
-  itemCrops: 4
+  SellingPrice: 0

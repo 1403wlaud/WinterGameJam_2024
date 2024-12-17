@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FarmSlot : MonoBehaviour
 {
@@ -10,11 +11,17 @@ public class FarmSlot : MonoBehaviour
     public int waterScore; // 물의 양 (간단한 시스템)
     public bool isGrown; // 작물이 성장했는지 여부
     private TimeManager timeManager;
+    public Button PlantBtn;
+    public Image CropsSprite;
+    private Sprite defaultSprite; // 기본 스프라이트 저장
 
-    private void Start()
+    private void OnEnable()
     {
+        PlantBtn=GetComponentInChildren<Button>();
+        CropsSprite=GetComponentInChildren<Image>();
         timeManager = GameObject.Find("GameManager").
             GetComponent<TimeManager>();
+        defaultSprite = PlantBtn.image.sprite;
     }
 
     public void PlantSeed(ItemObject seed)
@@ -40,15 +47,17 @@ public class FarmSlot : MonoBehaviour
 
     private void Update()
     {
+
         if (currentSeed == null || isGrown)
             return;
-
+        Debug.Log(currentSeed);
         // 성장 확인
         if (timeManager.Day >= currentSeed.Seed_TimeTaken && waterScore >= 10)
         {
             foreach (var item in items)
             {
-                if (currentSeed.Item_Crops == item.Item_Crops)
+                if (currentSeed.Item_Crops == item.Item_Crops &&
+                    item.Item_Type == ItemType.crops)
                 {
                     currentCropsItem = item; // 작물로 성장
                     isGrown = true;
@@ -61,21 +70,23 @@ public class FarmSlot : MonoBehaviour
 
     public ItemObject HarvestCrops()
     {
-        if (isGrown && currentCropsItem != null)
+        if (isGrown && currentSeed != null)
         {
-            ItemObject harvestedCrops = currentCropsItem;
-            ResetSlot();
-            return harvestedCrops;
+            Debug.Log($"{currentSeed.Item_Name}이 수확되었습니다!");
+            ItemObject harvestedItem = currentSeed;
+            return harvestedItem; // 수확된 작물 반환
         }
         return null;
     }
 
-    private void ResetSlot()
+    public void ResetSlot()
     {
         currentSeed = null;
         currentCropsItem = null;
-        isGrown = false;
         waterScore = 0;
+        isGrown = false;
+        PlantBtn.image.sprite = defaultSprite; // 스프라이트 초기화
+        Debug.Log("슬롯이 초기화되었습니다.");
     }
 
 }
