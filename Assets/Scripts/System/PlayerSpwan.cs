@@ -14,6 +14,9 @@ public class PlayerSpwan : MonoBehaviour
 
     private List<Vector3Int> groundTiles = new List<Vector3Int>();
 
+    [HideInInspector]
+    public GameObject spawnedHouse; // 생성된 집을 참조하기 위한 변수
+
     public void Spawn()
     {
         if (tilemap == null || playerPrefab == null || groundTile == null)
@@ -35,10 +38,8 @@ public class PlayerSpwan : MonoBehaviour
         Instantiate(playerPrefab, worldPosition, Quaternion.identity);
 
         // 집은 플레이어 스폰 위치에서 약간 떨어진 위치에 생성
-        int randomIndex = Random.Range(0, 2);
-        int value = (randomIndex == 0) ? 1 : -1;
-        Vector3 housePosition = worldPosition + new Vector3(10 * value, 10, 0);
-        Instantiate(housePrefab, housePosition, Quaternion.identity);
+        Vector3 housePosition = worldPosition + new Vector3(0, 4, 0);
+        spawnedHouse=Instantiate(housePrefab, housePosition, Quaternion.identity);
     }
 
     private Vector3Int FindRandomGroundTile()

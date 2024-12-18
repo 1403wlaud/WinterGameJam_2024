@@ -6,7 +6,7 @@ public class SlotManager : MonoBehaviour
     public ItemInventory inventory; 
     public Slot[] slots;
 
-    public void AddItemToInventory(Item newItem)
+    public void AddItemToInventory(ItemObject newItem)
     {
         if (inventory == null || slots == null) return;
 

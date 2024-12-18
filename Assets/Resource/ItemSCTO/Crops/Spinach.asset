@@ -15,7 +15,7 @@ MonoBehaviour:
   crops: 4
   type: 2
   itemName: Spinach
-  itemImage: {fileID: 0}
+  itemImage: {fileID: 513109264, guid: a1059cf96de5d4b40b411755e1f97dab, type: 3}
   ItemPrice: 0
   ItemExample: "\uC2DC\uAE08\uCE58"
   TimeTaken: 0

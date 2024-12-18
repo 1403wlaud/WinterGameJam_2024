@@ -15,7 +15,7 @@ MonoBehaviour:
   crops: 3
   type: 2
   itemName: Blueberry
-  itemImage: {fileID: 0}
+  itemImage: {fileID: -761286938, guid: a1059cf96de5d4b40b411755e1f97dab, type: 3}
   ItemPrice: 120
   ItemExample: "\uBE14\uB8E8\uBCA0\uB9AC"
   TimeTaken: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   crops: 2
   type: 2
   itemName: Carrot
-  itemImage: {fileID: 0}
+  itemImage: {fileID: -194348868, guid: a1059cf96de5d4b40b411755e1f97dab, type: 3}
   ItemPrice: 40
   ItemExample: "\uB2F9\uADFC"
   TimeTaken: 0

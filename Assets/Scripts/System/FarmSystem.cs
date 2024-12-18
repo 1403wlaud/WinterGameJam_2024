@@ -18,7 +18,9 @@ public class FarmSystem : MonoBehaviour
     [Header("씨앗 버튼 관리")]
     public Button[] seedButtons; // 씨앗 버튼 배열
     public ItemObject[] seedItems; // 각 씨앗 버튼에 대응하는 씨앗 아이템
-    private Outline selectedOutline; // 현재 선택된 버튼의 Outline 참조
+    public Text[] seedCountTexts; // 씨앗 수를 표시할 텍스트 배열
+
+    private Button selectedButton; // 선택된 버튼 저장
 
     private void Start()
     {
@@ -26,32 +28,58 @@ public class FarmSystem : MonoBehaviour
         SetupSlotButtons();
 
         // 물 양동이 버튼 이벤트 설정
+        waterButton.onClick.RemoveAllListeners();
         waterButton.onClick.AddListener(ToggleWateringMode);
-        AddOutlineComponent(waterButton); // 물 양동이 버튼에 Outline 추가
+        AddOutlineComponent(waterButton);
+    }
+    private void Update()
+    {
+        UpdateSeedCounts(); // 씨앗 수를 실시간으로 업데이트
     }
 
-    /// <summary>
-    /// 씨앗 버튼에 클릭 이벤트 추가
-    /// </summary>
     private void SetupSeedButtons()
     {
         for (int i = 0; i < seedButtons.Length; i++)
         {
-            int index = i;
-            AddOutlineComponent(seedButtons[i]); // Outline 컴포넌트 추가
-            seedButtons[i].onClick.AddListener(() => ToggleSeedSelection(seedItems[index], seedButtons[index]));
+            int index = i; // 로컬 변수로 캡처
+            AddOutlineComponent(seedButtons[index]);
+
+            // 기존 이벤트 제거
+            seedButtons[index].onClick.RemoveAllListeners();
+
+            // 클릭 이벤트 추가
+            seedButtons[index].onClick.AddListener(() => OnSeedButtonClicked(index));
         }
     }
 
-    /// <summary>
-    /// 슬롯 버튼에 클릭 이벤트 추가
-    /// </summary>
+    private void UpdateSeedCounts()
+    {
+        for (int i = 0; i < seedItems.Length; i++)
+        {
+            int count = GetSeedCount(seedItems[i]); // 인벤토리에서 씨앗 수 확인
+            seedCountTexts[i].text = count > 0 ? count.ToString() : "0"; // Text에 개수 표시
+        }
+    }
+    private int GetSeedCount(ItemObject seed)
+    {
+        int count = 0;
+        foreach (var item in inventory.items)
+        {
+            if (item.Item_Name == seed.Item_Name)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
     private void SetupSlotButtons()
     {
         for (int i = 0; i < farmSlots.Length; i++)
         {
             int slotIndex = i;
-            farmSlots[i].PlantBtn.onClick.AddListener(() => OnSlotButtonClicked(slotIndex));
+            farmSlots[i].PlantBtn.onClick.AddListener(()
+                => OnSlotButtonClicked(slotIndex));
         }
     }
 
@@ -62,100 +90,76 @@ public class FarmSystem : MonoBehaviour
     {
         if (isWateringMode)
         {
-            isWateringMode = false; // 물 주기 모드 비활성화
+            isWateringMode = false;
             SetOutline(waterButton, false);
-            Debug.Log("물 주기 모드가 종료되었습니다.");
         }
         else
         {
-            selectedSeed = null; // 씨앗 선택 해제
-            isWateringMode = true; // 물 주기 모드 활성화
+            isWateringMode = true;
+            selectedSeed = null;
+            if (selectedButton != null)
+            {
+                SetOutline(selectedButton, false);
+                selectedButton = null;
+            }
             SetOutline(waterButton, true);
-            ClearAllOtherOutlines(waterButton);
-            Debug.Log("물 주기 모드가 활성화되었습니다.");
         }
     }
 
     /// <summary>
     /// 씨앗 선택 토글
     /// </summary>
-    private void ToggleSeedSelection(ItemObject seed, Button button)
+    private void OnSeedButtonClicked(int index)
     {
-        if (selectedSeed == seed)
+        Button clickedButton = seedButtons[index];
+
+        if (selectedButton == clickedButton) // 이미 선택된 버튼 클릭 시 해제
         {
-            selectedSeed = null; // 같은 씨앗 버튼 다시 누르면 해제
-            SetOutline(button, false);
-            Debug.Log("씨앗 선택이 해제되었습니다.");
+            selectedSeed = null;
+            SetOutline(clickedButton, false);
+            selectedButton = null;
         }
-        else
+        else // 새로운 버튼 선택
         {
-            selectedSeed = seed; // 새로운 씨앗 선택
-            isWateringMode = false; // 물 주기 모드 비활성화
-            SetOutline(button, true);
-            ClearAllOtherOutlines(button);
-            Debug.Log($"씨앗 {seed.Item_Name}이 선택되었습니다.");
+            selectedSeed = seedItems[index];
+            isWateringMode = false;
+            SetOutline(clickedButton, true);
+            ClearAllOtherOutlines(clickedButton);
+            selectedButton = clickedButton; // 현재 선택된 버튼 업데이트
         }
     }
 
-    /// <summary>
-    /// 슬롯 버튼 클릭 시 동작
-    /// </summary>
-    private void OnSlotButtonClicked(int slotIndex)
+
+    private bool InventoryHasSeed(ItemObject seed)
     {
-        if (isWateringMode)
-        {
-            // 물 주기 모드
-            farmSlots[slotIndex].WaterPlant();
-            Debug.Log($"슬롯 {slotIndex}에 물을 주었습니다. 현재 물 점수: {farmSlots[slotIndex].waterScore}");
-        }
-        else if (selectedSeed != null && farmSlots[slotIndex].currentSeed == null)
-        {
-            // 씨앗 심기
-            farmSlots[slotIndex].PlantSeed(selectedSeed);
-            farmSlots[slotIndex].PlantBtn.image.sprite = null; // 스프라이트 숨김
-            Debug.Log($"슬롯 {slotIndex}에 씨앗 {selectedSeed.Item_Name}이 심어졌습니다.");
-        }
-        else if (selectedSeed == null && !isWateringMode && farmSlots[slotIndex].isGrown)
-        {
-            // 작물 수확 조건
-            HarvestCrops(slotIndex);
-        }
+        return GetSeedCount(seed) > 0;
     }
 
-    /// <summary>
-    /// 작물 수확
-    /// </summary>
-    public void HarvestCrops(int slotIndex)
-    {
-        if (slotIndex >= 0 && slotIndex < farmSlots.Length)
-        {
-            ItemObject harvestedCrops = farmSlots[slotIndex].HarvestCrops();
-
-            if (harvestedCrops != null)
-            {
-                inventory.items.Add(harvestedCrops); // 인벤토리에 추가
-                farmSlots[slotIndex].ResetSlot(); // 슬롯 초기화
-                Debug.Log($"{harvestedCrops.Item_Name}을(를) 수확하여 인벤토리에 추가했습니다.");
-            }
-            else
-            {
-                Debug.Log("수확할 작물이 없습니다.");
-            }
-        }
-    }
-
-    /// <summary>
-    /// Outline 컴포넌트 추가
-    /// </summary>
     private void AddOutlineComponent(Button button)
     {
         if (button.GetComponent<Outline>() == null)
         {
             Outline outline = button.gameObject.AddComponent<Outline>();
             outline.enabled = false; // 초기에는 비활성화
-            outline.effectColor = Color.yellow; // 선택 시 강조 색상
-            outline.effectDistance = new Vector2(5, 5); // 강조 효과 두께
+            outline.effectColor = Color.yellow; // 강조 색상
+            outline.effectDistance = new Vector2(5, 5); // 강조 효과 거리
         }
+    }
+
+    /// <summary>
+    /// 씨앗을 인벤토리에서 하나 소모
+    /// </summary>
+    private bool ConsumeSeed(ItemObject seed)
+    {
+        for (int i = 0; i < inventory.items.Count; i++)
+        {
+            if (inventory.items[i].Item_Name == seed.Item_Name) // 이름으로 비교
+            {
+                inventory.items.RemoveAt(i); // 아이템 제거
+                return true;
+            }
+        }
+        return false;
     }
 
     /// <summary>
@@ -183,5 +187,39 @@ public class FarmSystem : MonoBehaviour
 
         if (waterButton != activeButton)
             SetOutline(waterButton, false);
+    }
+
+    private void OnSlotButtonClicked(int slotIndex)
+    {
+        if (isWateringMode)
+        {
+            farmSlots[slotIndex].WaterPlant();
+        }
+        else if (selectedSeed != null && farmSlots[slotIndex].currentSeed == null)
+        {
+            if (ConsumeSeed(selectedSeed)) // 씨앗을 사용하면 true 반환
+            {
+                farmSlots[slotIndex].PlantSeed(selectedSeed);
+                farmSlots[slotIndex].PlantBtn.image.sprite = null;
+            }
+        }
+        else if (selectedSeed == null && !isWateringMode && farmSlots[slotIndex].isGrown)
+        {
+            // 작물 수확 조건
+            HarvestCrops(slotIndex);
+        }
+    }
+    public void HarvestCrops(int slotIndex)
+    {
+        if (slotIndex >= 0 && slotIndex < farmSlots.Length)
+        {
+            ItemObject harvestedCrops = farmSlots[slotIndex].HarvestCrops();
+
+            if (harvestedCrops != null)
+            {
+                inventory.items.Add(harvestedCrops); // 인벤토리에 추가
+                farmSlots[slotIndex].ResetSlot(); // 슬롯 초기화
+            }
+        }
     }
 }

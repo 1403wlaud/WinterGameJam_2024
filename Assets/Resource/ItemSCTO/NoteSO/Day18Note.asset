@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9253adef75681b43907e0a9d74ba205, type: 3}
+  m_Name: Day18Note
+  m_EditorClassIdentifier: 
+  NoteContents: "\uC804\uB3D9\uB4DC\uB9B4\uB85C \uC625\uC218\uC218\uB97C \uBA39\uC744
+    \uC218 \uC788\uB294\uAC70 \uC54C\uC544?"

@@ -13,14 +13,15 @@ public class FarmSlot : MonoBehaviour
     private TimeManager timeManager;
     public Button PlantBtn;
     public Image CropsSprite;
+    public GameObject text;
     private Sprite defaultSprite; // 기본 스프라이트 저장
+    private int plantedDay; // 씨앗이 심어진 날
 
     private void OnEnable()
     {
-        PlantBtn=GetComponentInChildren<Button>();
-        CropsSprite=GetComponentInChildren<Image>();
-        timeManager = GameObject.Find("GameManager").
-            GetComponent<TimeManager>();
+        PlantBtn = GetComponentInChildren<Button>();
+        CropsSprite = GetComponentInChildren<Image>();
+        timeManager = GameObject.Find("GameManager").GetComponent<TimeManager>();
         defaultSprite = PlantBtn.image.sprite;
     }
 
@@ -32,7 +33,7 @@ public class FarmSlot : MonoBehaviour
             currentSeed = seed;
             waterScore = 0; // 물 초기화
             isGrown = false;
-            Debug.Log($"씨앗 {seed.Item_Name}이 심어졌습니다.");
+            plantedDay = timeManager.Day; // 씨앗이 심어진 날 저장
         }
     }
 
@@ -41,27 +42,27 @@ public class FarmSlot : MonoBehaviour
         if (currentSeed != null && !isGrown)
         {
             waterScore++;
-            Debug.Log("물을 주었습니다. 현재 물 점수: " + waterScore);
         }
     }
 
     private void Update()
     {
-
         if (currentSeed == null || isGrown)
             return;
-        Debug.Log(currentSeed);
-        // 성장 확인
-        if (timeManager.Day >= currentSeed.Seed_TimeTaken && waterScore >= 10)
+
+        // 작물이 자랄 조건 확인
+        int daysSincePlanted = timeManager.Day - plantedDay; // 심어진 이후 지난 날 계산
+
+        if (daysSincePlanted >= currentSeed.Seed_TimeTaken && waterScore >= 10)
         {
             foreach (var item in items)
             {
                 if (currentSeed.Item_Crops == item.Item_Crops &&
                     item.Item_Type == ItemType.crops)
                 {
+                    text.gameObject.SetActive(true);
                     currentCropsItem = item; // 작물로 성장
                     isGrown = true;
-                    Debug.Log($"{currentCropsItem.Item_Name}이 성장했습니다!");
                     break;
                 }
             }
@@ -72,8 +73,8 @@ public class FarmSlot : MonoBehaviour
     {
         if (isGrown && currentSeed != null)
         {
-            Debug.Log($"{currentSeed.Item_Name}이 수확되었습니다!");
-            ItemObject harvestedItem = currentSeed;
+            ItemObject harvestedItem = currentCropsItem;
+            ResetSlot(); // 슬롯 초기화
             return harvestedItem; // 수확된 작물 반환
         }
         return null;
@@ -85,8 +86,8 @@ public class FarmSlot : MonoBehaviour
         currentCropsItem = null;
         waterScore = 0;
         isGrown = false;
+        plantedDay = 0; // 초기화
         PlantBtn.image.sprite = defaultSprite; // 스프라이트 초기화
-        Debug.Log("슬롯이 초기화되었습니다.");
+        text.gameObject.SetActive (false);
     }
-
 }

@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: Day_27_Quest
   m_EditorClassIdentifier: 
   Day: 27
-  NeedObj: {fileID: 11400000, guid: 38e7b759fbe677947b208390373cd425, type: 2}
+  NeedObj: {fileID: 11400000, guid: 87f1b746e3fd4b0498666cfb7967e13f, type: 2}
   NeedItemCount: 5
   RewardMoney: 550
+  CharacterFaceImg: {fileID: 21300000, guid: f67f4fdb281d79147bcf715b06cf93f9, type: 3}
+  CharacterName: 
+  CheckQuest: 0
   RewardItem: {fileID: 0}
   ItemCount: 0
-  NeedObj2: {fileID: 11400000, guid: b95d0122ce76450459e12b939bc53b9b, type: 2}
+  NeedObj2: {fileID: 11400000, guid: 6a18576c9cf65904eb0ff36cdcf0dbd3, type: 2}
   NeedItemCount2: 5

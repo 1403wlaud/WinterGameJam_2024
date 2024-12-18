@@ -30,6 +30,10 @@ public class RandomMapGenerater : MonoBehaviour
     [SerializeField] private int mapSize;
     [SerializeField] private int octaves;
 
+
+    [SerializeField] private TileBase[] houseSurroundingTiles;
+    [SerializeField] private int surroundingRadius = 5;
+
     public PlayerSpwan playerSpwan;
 
     private float seed;
@@ -125,6 +129,7 @@ public class RandomMapGenerater : MonoBehaviour
         SpawnObjectsAtRandomPositions(newObjects, newObjectPositions, maxNewObjects);
 
         playerSpwan.Spawn();
+        PlaceCircularTileAreaAroundHouse();
     }
 
     private TileBase GetTileByHight(float hight)
@@ -183,6 +188,40 @@ public class RandomMapGenerater : MonoBehaviour
 
             // 오브젝트 생성
             Instantiate(prefab, worldPosition, Quaternion.identity,tileMap.transform);
+        }
+    }
+    private void PlaceCircularTileAreaAroundHouse()
+    {
+        if (playerSpwan.spawnedHouse == null)
+        {
+            Debug.LogError("생성된 집이 없습니다.");
+            return;
+        }
+
+        // 집 오브젝트의 월드 좌표를 타일맵 셀 좌표로 변환
+        Vector3 houseWorldPosition = playerSpwan.spawnedHouse.transform.position;
+        Vector3Int houseCellPosition = tileMap.WorldToCell(houseWorldPosition);
+        houseCellPosition.y -= 4;
+
+        // 원형 범위 내 타일 좌표 계산 및 타일 배치
+        for (int x = -surroundingRadius; x <= surroundingRadius; x++)
+        {
+            for (int y = -surroundingRadius; y <= surroundingRadius; y++)
+            {
+                Vector3Int offset = new Vector3Int(x, y, 0);
+                Vector3Int tilePosition = houseCellPosition + offset;
+
+                // 원의 방정식을 이용하여 원 내부의 타일만 선택
+                if (x * x + y * y <= surroundingRadius * surroundingRadius)
+                {
+                    // 타일 배열에서 무작위로 타일 선택
+                    if (houseSurroundingTiles != null && houseSurroundingTiles.Length > 0)
+                    {
+                        TileBase selectedTile = houseSurroundingTiles[Random.Range(0, houseSurroundingTiles.Length)];
+                        tileMap.SetTile(tilePosition, selectedTile);
+                    }
+                }
+            }
         }
     }
 }

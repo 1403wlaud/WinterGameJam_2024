@@ -15,7 +15,7 @@ MonoBehaviour:
   crops: 0
   type: 2
   itemName: Potato
-  itemImage: {fileID: 0}
+  itemImage: {fileID: -1759201688, guid: a1059cf96de5d4b40b411755e1f97dab, type: 3}
   ItemPrice: 0
   ItemExample: "\uAC10\uC790"
   TimeTaken: 0
