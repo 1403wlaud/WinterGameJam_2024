@@ -12,7 +12,11 @@ public class ButtonManager : MonoBehaviour
     public GameObject Store;
     public GameObject Store2;
     private GameObject PlayerInventory;
+    private GameObject BackPack;
+    private Button InventoryBtn;
     private Button FarmOffBtn;
+    private Move pMove;
+    private bool DubbleClickCheck=false;
 
     private void Start()
     {
@@ -23,11 +27,15 @@ public class ButtonManager : MonoBehaviour
     {
         if (GameManager.Player != null)
         {
-            PlayerInventory = GameManager.Player.transform.GetChild(1).transform.GetChild(0).gameObject;
+            BackPack=GameManager.Player.transform.GetChild(1).transform.GetChild(0).gameObject;
+            PlayerInventory = GameManager.Player.transform.GetChild(1).transform.GetChild(1).gameObject;
             if(PlayerInventory == null) { Debug.LogWarning("°Á µÚÁö¼À"); }
-            Farm=GameManager.Player.transform.GetChild(1).transform.GetChild(1).gameObject;
+            Farm=GameManager.Player.transform.GetChild(1).transform.GetChild(2).gameObject;
             FarmOffBtn=Farm.transform.GetChild(13).GetComponent<Button>();
             FarmOffBtn.onClick.AddListener(FarmExitButtonClick);
+            pMove=GameManager.Player.GetComponent<Move>();
+            InventoryBtn=BackPack.GetComponent<Button>();
+            InventoryBtn.onClick.AddListener(InventoryOn);
         }
         else
         {
@@ -36,35 +44,60 @@ public class ButtonManager : MonoBehaviour
 
     }
 
+    public void InventoryOn()
+    {
+        if (DubbleClickCheck == false)
+        {
+            PlayerInventory.SetActive(true);
+            DubbleClickCheck = true;
+        }
+        else
+        {
+            PlayerInventory.SetActive(false);
+            DubbleClickCheck = false;
+        }
+
+    }
+
     public void FarmButtonClick()
     {
         Farm.SetActive(true);
+        pMove.enabled = false;
     }
     public void FarmExitButtonClick()
     {
         Farm.SetActive(false);
+        pMove.enabled = true;
     }
     public void QuestButtonClick()
     {
         Qest.SetActive(true);
         PlayerInventory.SetActive(false);
+        BackPack.SetActive(false);
+        pMove.enabled=false;
     }
     public void QuestButtonExitClick()
     {
         Qest.SetActive(false );
         PlayerInventory.SetActive(true);
+        BackPack.SetActive(true);
+        pMove.enabled=true;
     }
     public void StoreButtonClick()
     {
         Store.SetActive(true);
         Store2.SetActive(true);
         PlayerInventory.SetActive(false);
+        BackPack.SetActive(false);
+        pMove.enabled = false;
     }
     public void StoreExitButtonClick()
     {
         Store.SetActive(false);
         Store2.SetActive(false);
         Store.GetComponent<StoreSystem>().BuySell_Panel.SetActive(false);
+        BackPack.SetActive(true);
         PlayerInventory.SetActive(true);
+        pMove.enabled = true;
     }
 }

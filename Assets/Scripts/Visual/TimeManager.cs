@@ -17,7 +17,7 @@ public class TimeManager : MonoBehaviour
     private float elapsedTime = 0f; // 경과한 실제 시간
     private int gameHours = 8; // 시작 시간 (아침 8시)
     private int gameMinutes = 0; // 시작 분
-    private const float secondsPerGameHour = 10f; // 한 시간에 10초
+    private const float secondsPerGameHour = 5f; // 한 시간에 10초
     private bool timerRunning = true; // 타이머 동작 상태
 
     private const int eveningStart = 17; // 오후 4시 (알파값 증가 시작)
@@ -47,16 +47,16 @@ public class TimeManager : MonoBehaviour
             if (isBlinking)
             {
                 // 깜빡거림: 투명하게 만들기
-                txt.color = new Color(timeDisplay.color.r, timeDisplay.color.g, timeDisplay.color.b, 0);
+                txt.gameObject.SetActive(false);
             }
             else
             {
                 // 깜빡거림: 원래 색으로 복원
-                txt.color = new Color(timeDisplay.color.r, timeDisplay.color.g, timeDisplay.color.b, 1);
+                txt.gameObject.SetActive(true);
             }
 
             isBlinking = !isBlinking; // 상태 전환
-            yield return new WaitForSeconds(0.25f); // 0.5초마다 깜빡거림
+            yield return new WaitForSecondsRealtime(0.25f); // 0.5초마다 깜빡거림
         }
     }
 
@@ -99,7 +99,7 @@ public class TimeManager : MonoBehaviour
         int displayHours = gameHours % 12;
         if (displayHours == 0) displayHours = 12;
 
-        timeDisplay.text = string.Format("{0:00} {1:00} {2}", displayHours, gameMinutes, period);
+        timeDisplay.text = string.Format("{0:00}  {1:00} {2}", displayHours, gameMinutes, period);
     }
 
     private void UpdateDayDisplay()
@@ -153,16 +153,16 @@ public class TimeManager : MonoBehaviour
         if (gameHours >= eveningStart || gameHours < morningStart)
         {
             // 오후 4시 이후 ~ 오전 5시까지 텍스트 하얗게
-            timeDisplay.color = Color.white;
-            txt.color = Color.white;
-            dayDisplay.color = Color.white;
+            timeDisplay.color = new Color(255,255,255);
+            txt.color = new Color(255, 255, 255);
+            dayDisplay.color = new Color(255, 255, 255);
         }
         else
         {
             // 오전 5시 이후 텍스트 검정색
-            timeDisplay.color = Color.black;
-            txt.color = Color.black;
-            dayDisplay.color = Color.black;
+            timeDisplay.color = new Color(0, 0, 0);
+            txt.color = new Color(0, 0, 0);
+            dayDisplay.color = new Color(0, 0, 0);
         }
     }
 

@@ -16,6 +16,6 @@ public class MoneyUI : MonoBehaviour
     void Update()
     {
         if(gameManager.Player != null) 
-            textMeshProUGUI.text=gameManager.Player.GetComponent<ItemInventory>().Money.ToString();
+            textMeshProUGUI.text=$"<size=60>$ "+gameManager.Player.GetComponent<ItemInventory>().Money.ToString();
     }
 }

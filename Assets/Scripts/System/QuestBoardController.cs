@@ -37,9 +37,7 @@ public class QuestBoardController : MonoBehaviour
         
     }
 
-    /// <summary>
     /// 퀘스트 보드의 UI 업데이트
-    /// </summary>
     public void UpdateUI()
     {
         if (AssignedQuest == null || playerInventory == null) return;
