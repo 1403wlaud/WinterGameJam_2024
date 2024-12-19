@@ -20,3 +20,10 @@ MonoBehaviour:
   ItemExample: "\uC2DC\uAE08\uCE58\uC528\uC557"
   TimeTaken: 8
   SellingPrice: 0
+  GrrowImg:
+  - {fileID: -1499713601, guid: 06c2a6a6c4dba0c4f93893018cea4abe, type: 3}
+  - {fileID: -1478813341, guid: 06c2a6a6c4dba0c4f93893018cea4abe, type: 3}
+  - {fileID: 433569955, guid: 06c2a6a6c4dba0c4f93893018cea4abe, type: 3}
+  - {fileID: -1215664207, guid: 06c2a6a6c4dba0c4f93893018cea4abe, type: 3}
+  - {fileID: -612583092, guid: 06c2a6a6c4dba0c4f93893018cea4abe, type: 3}
+  Seed_GrowthDurations: 0100000002000000020000000200000001000000
