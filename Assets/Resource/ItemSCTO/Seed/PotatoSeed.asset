@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ae91cd1b731a74d940ebe362268aef, type: 3}
   m_Name: PotatoSeed
   m_EditorClassIdentifier: 
+  crops: 0
   type: 0
   itemName: PotatoSeed
-  itemImage: {fileID: 0}
+  itemImage: {fileID: -887046755, guid: a1059cf96de5d4b40b411755e1f97dab, type: 3}
   ItemPrice: 30
   ItemExample: "\uAC10\uC790\uC528\uC557"
   TimeTaken: 3
+  SellingPrice: 0

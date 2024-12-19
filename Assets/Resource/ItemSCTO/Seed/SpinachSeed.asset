@@ -15,7 +15,7 @@ MonoBehaviour:
   crops: 4
   type: 0
   itemName: SpinachSeed
-  itemImage: {fileID: 0}
+  itemImage: {fileID: -579898173, guid: a1059cf96de5d4b40b411755e1f97dab, type: 3}
   ItemPrice: 130
   ItemExample: "\uC2DC\uAE08\uCE58\uC528\uC557"
   TimeTaken: 8

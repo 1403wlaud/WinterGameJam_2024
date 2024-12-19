@@ -4,21 +4,24 @@ using UnityEngine;
 
 public class ButtonManager : MonoBehaviour
 {
-    private Move playermove;
-    private void Start()
+    public GameManager GameManager;
+    private GameObject Farm;
+    public GameObject Qest;
+    public GameObject Store;
+    private GameObject PlayerInventory;
+
+    public void FarmButtonClick()
     {
-        if (GameObject.FindWithTag("Player") == null) return;
-        playermove=GameObject.FindWithTag("Player")
-            .GetComponent<Move>();
+
+    }
+    public void QuestButtonClick()
+    {
+
+    }
+    public void StoreButtonClick()
+    {
+
     }
 
-    public void MapBittonClick()
-    {
-        Display.displays[1].Activate();
-        //playermove.enabled = false;
-    }
-    public void MapBittonClick_Exit()
-    {
-        playermove.enabled = false;
-    }
+
 }

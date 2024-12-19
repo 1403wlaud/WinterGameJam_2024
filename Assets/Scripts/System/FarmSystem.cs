@@ -200,7 +200,10 @@ public class FarmSystem : MonoBehaviour
             if (ConsumeSeed(selectedSeed)) // ¾¾¾ÑÀ» »ç¿ëÇÏ¸é true ¹ÝÈ¯
             {
                 farmSlots[slotIndex].PlantSeed(selectedSeed);
-                farmSlots[slotIndex].PlantBtn.image.sprite = null;
+                farmSlots[slotIndex].PlantBtn.image.color 
+                    = new Color(farmSlots[slotIndex].PlantBtn.image.color.r,
+                    farmSlots[slotIndex].PlantBtn.image.color.g, 
+                    farmSlots[slotIndex].PlantBtn.image.color.b,0);
             }
         }
         else if (selectedSeed == null && !isWateringMode && farmSlots[slotIndex].isGrown)

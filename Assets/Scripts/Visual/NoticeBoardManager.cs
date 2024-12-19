@@ -5,84 +5,85 @@ using UnityEngine.UI;
 
 public class NoticeBoardManager : MonoBehaviour
 {
-    [SerializeField] private List<Quest> quests; // 퀘스트 리스트
-    public Image ChImg;
-    public Text ChNmae;
-    public Text OderTxt;
-    public Text RewardTxt;
+    public GameObject QuestBordPrefab;
+    public Transform InstancePos;
+    public TimeManager timeManager;
+    public ItemInventory playerInventory;
+    public GameObject text;
 
-    public Image Panel; // 패널 UI
-    public TimeManager timeManager; // 날짜 관리
-
-    private Quest activeQuest = null; // 현재 활성화된 퀘스트
-    private int lastCheckedDay = 0; // 마지막으로 확인한 날짜
+    private List<GameObject> activeQuestBoards = new List<GameObject>();
+    [SerializeField] private List<SCTOBJQuest> quests;
 
     private void Update()
     {
-        CheckForNewQuest();
-        UpdatePanel();
+        if (GameObject.Find("Player(Clone)") != null)
+            playerInventory = GameObject.Find("Player(Clone)").GetComponent<ItemInventory>();
+        CheckForNewQuests(); //퀘스트 확인
+
+        //UI업데이트
+        if(activeQuestBoards.Count > 0)
+            for(int i = 0; i < activeQuestBoards.Count; i++)
+                for(int j = 0;j<quests.Count; j++)
+                    if(i==j) UpdateQuestBoardUI(activeQuestBoards[i], quests[j]);
+
+        if (activeQuestBoards.Count==0)
+            text.gameObject.SetActive(true);
+        else
+            text.gameObject.SetActive(false);   
     }
 
-    // 날짜 변경 및 새로운 퀘스트 확인
-    private void CheckForNewQuest()
+    private void CheckForNewQuests()
     {
-        // 날짜가 변경되었는지 확인
-        if (timeManager.Day != lastCheckedDay)
-        {
-            lastCheckedDay = timeManager.Day; // 현재 날짜 갱신
+        // 퀘스트 보드를 생성하는 로직 호출
+        SpawnQuestBoards();
+    }
 
-            // 새로운 퀘스트가 있는지 확인
-            Quest newQuest = GetQuestForToday();
-            if (newQuest != null)
+    private void SpawnQuestBoards()
+    {
+        foreach (SCTOBJQuest quest in quests)
+        {
+            if (IsQuestAlreadyActive(quest))
             {
-                activeQuest = newQuest; // 새로운 퀘스트로 갱신
+
+                Debug.Log($"이미 활성화된 퀘스트: {quest.Q_CharacterName}");
+                continue;
+            }
+
+            if (quest.Q_Day == timeManager.Day)
+            {
+                Debug.Log($"새 퀘스트 생성: {quest.Q_CharacterName}");
+                GameObject questBoard = Instantiate(QuestBordPrefab, InstancePos);
+
+                if (questBoard == null)
+                {
+                    Debug.LogError("QuestBoardPrefab 인스턴스화 실패!");
+                    continue;
+                }
+
+                // UI 초기화는 UpdateQuestBoardUI로 처리
+                
+                activeQuestBoards.Add(questBoard);
             }
         }
     }
 
-    // 오늘 또는 가장 최근에 활성화된 퀘스트를 반환
-    private Quest GetQuestForToday()
+    private bool IsQuestAlreadyActive(SCTOBJQuest quest)
     {
-        Quest latestQuest = null;
-
-        foreach (Quest quest in quests)
+        foreach (GameObject questBoard in activeQuestBoards)
         {
-            // 오늘 날짜 이후의 첫 번째 퀘스트를 찾음
-            if (timeManager.Day >= quest.Q_Day)
-            {
-                latestQuest = quest; // 가장 최근 날짜의 퀘스트 갱신
-            }
-
-            // 날짜가 현재 날짜보다 뒤라면 루프 중지
-            if (timeManager.Day < quest.Q_Day)
-            {
-                break;
-            }
+            QuestBoardController controller = questBoard.GetComponent<QuestBoardController>();
+            if (controller != null && controller.AssignedQuest == quest)
+                return true;
         }
-
-        return latestQuest;
+        return false;
     }
 
-    // 패널 UI 업데이트
-    private void UpdatePanel()
+    private void UpdateQuestBoardUI(GameObject questBoard, SCTOBJQuest quest)
     {
-        if (activeQuest != null)
+        QuestBoardController controller = questBoard.GetComponent<QuestBoardController>();
+        if (controller != null)
         {
-            Panel.gameObject.SetActive(true); // 패널 활성화
-            UpdateUI(activeQuest);
+            controller.Initialize(quest, playerInventory);
         }
-        else if(activeQuest==null || activeQuest.Q_CheckQuest)
-        {
-            Panel.gameObject.SetActive(false); // 패널 비활성화
-        }
-    }
-
-    // UI에 퀘스트 내용 업데이트
-    private void UpdateUI(Quest quest)
-    {
-        ChImg.sprite = quest.Q_CharacterFaceImg;
-        ChNmae.text = quest.Q_CharacterName;
-        OderTxt.text = $"{quest.Q_NeedObj.Item_Name} {quest.Q_NeedItemCount}개";
-        RewardTxt.text = quest.Q_RewardMoney.ToString();
     }
 }

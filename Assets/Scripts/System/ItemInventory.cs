@@ -16,7 +16,7 @@ public class ItemInventory : MonoBehaviour
     /// <summary>
     /// 인벤토리와 슬롯을 동기화
     /// </summary>
-    private void SyncSlotsWithInventory()
+    public void SyncSlotsWithInventory()
     {
         if (slotManager == null || slotManager.slots == null)
             return;
@@ -35,5 +35,7 @@ public class ItemInventory : MonoBehaviour
         {
             slotManager.AddItemToInventory(item);
         }
+
+        Debug.Log("인벤토리와 슬롯 동기화 완료");
     }
 }

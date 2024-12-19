@@ -4,25 +4,50 @@ using UnityEngine;
 
 public class Move : MonoBehaviour
 {
-    public float speed;
-    private Rigidbody2D rb;
-    private Vector2 moveVelocity;
+    public float Speed;
+    Rigidbody2D rigid;
+    Vector2 movement;
+    bool isHorizonMove;
+    Animator anim;
     private float minX = 47f;
     private float maxX = 461;
     private float minY = 31f;
     private float maxY = 472;
-
-
-    private void Start()
+    void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigid = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        Vector2 moveInput = new Vector2(
-            Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        moveVelocity = moveInput.normalized * speed;
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+        anim.SetFloat("Horizontal",movement.x);
+        anim.SetFloat("Vertical", movement.y);
+        anim.SetFloat("Speed",movement.sqrMagnitude);
+        //if (anim.GetInteger("hAxisRaw") != h)
+        //{
+        //    anim.SetBool("isChange", true);
+        //    anim.SetInteger("hAxisRaw", (int)h);
+        //}
+        //else if (anim.GetInteger("vAxisRaw") != v)
+        //{
+        //    anim.SetBool("isChange", true);
+        //    anim.SetInteger("vAxisRaw", (int)v);
+        //}
+        //else
+        //{
+        //    anim.SetBool("isChange", false);
+        //}
+        //if (hDown||vUp)
+        //{
+        //    isHorizonMove = false;
+        //}
+        //else if (vDown || hUp)
+        //{
+        //    isHorizonMove = h != 0;
+        //}
         Vector3 currentPosition = transform.position;
 
         // 제한된 영역으로 위치를 고정
@@ -35,6 +60,6 @@ public class Move : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
+        rigid.MovePosition(rigid.position+movement*Speed*Time.deltaTime);
     }
 }

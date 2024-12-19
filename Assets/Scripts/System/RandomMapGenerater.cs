@@ -139,7 +139,7 @@ public class RandomMapGenerater : MonoBehaviour
             case <= 0.35f: return GetRandomTile(waterTiles);
             case <= 0.42f: return GetRandomTile(sandTiles);
             case <= 0.50f: return GetRandomTile(lawnTiles);
-            case <= 0.7f: return GetRandomTile(gressTiles);
+            case <= 0.65f: return GetRandomTile(gressTiles);
             default: return GetRandomTile(forestTiles);
         }
     }

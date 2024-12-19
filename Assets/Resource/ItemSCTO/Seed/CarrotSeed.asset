@@ -15,7 +15,7 @@ MonoBehaviour:
   crops: 2
   type: 0
   itemName: CarrotSeed
-  itemImage: {fileID: 0}
+  itemImage: {fileID: -1930116592, guid: a1059cf96de5d4b40b411755e1f97dab, type: 3}
   ItemPrice: 40
   ItemExample: "\uB2F9\uADFC\uC528\uC557"
   TimeTaken: 5

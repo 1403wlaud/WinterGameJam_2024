@@ -14,6 +14,7 @@ public class FarmSlot : MonoBehaviour
     public Button PlantBtn;
     public Image CropsSprite;
     public GameObject text;
+    private Image ItemImage;
     private Sprite defaultSprite; // 기본 스프라이트 저장
     private int plantedDay; // 씨앗이 심어진 날
 
@@ -21,6 +22,7 @@ public class FarmSlot : MonoBehaviour
     {
         PlantBtn = GetComponentInChildren<Button>();
         CropsSprite = GetComponentInChildren<Image>();
+        ItemImage=transform.GetChild(0).GetComponent<Image>();
         timeManager = GameObject.Find("GameManager").GetComponent<TimeManager>();
         defaultSprite = PlantBtn.image.sprite;
     }
@@ -33,6 +35,8 @@ public class FarmSlot : MonoBehaviour
             currentSeed = seed;
             waterScore = 0; // 물 초기화
             isGrown = false;
+            ItemImage.gameObject.SetActive(true);
+            ItemImage.sprite = currentSeed.Item_Image;
             plantedDay = timeManager.Day; // 씨앗이 심어진 날 저장
         }
     }
@@ -62,6 +66,7 @@ public class FarmSlot : MonoBehaviour
                 {
                     text.gameObject.SetActive(true);
                     currentCropsItem = item; // 작물로 성장
+                    ItemImage.sprite = currentCropsItem.Item_Image;
                     isGrown = true;
                     break;
                 }
@@ -87,6 +92,10 @@ public class FarmSlot : MonoBehaviour
         waterScore = 0;
         isGrown = false;
         plantedDay = 0; // 초기화
+        ItemImage.gameObject.SetActive(false);
+        PlantBtn.image.color = new Color(
+            PlantBtn.image.color.r, PlantBtn.image.color.g, 
+            PlantBtn.image.color.b, 255);
         PlantBtn.image.sprite = defaultSprite; // 스프라이트 초기화
         text.gameObject.SetActive (false);
     }

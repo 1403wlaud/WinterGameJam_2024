@@ -15,7 +15,7 @@ MonoBehaviour:
   crops: 1
   type: 0
   itemName: CornSeed
-  itemImage: {fileID: 0}
+  itemImage: {fileID: -1978540150, guid: a1059cf96de5d4b40b411755e1f97dab, type: 3}
   ItemPrice: 50
   ItemExample: "\uC625\uC218\uC218\uC528\uC557"
   TimeTaken: 5

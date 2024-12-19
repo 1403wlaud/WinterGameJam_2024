@@ -17,16 +17,21 @@ public class TimeManager : MonoBehaviour
     private float elapsedTime = 0f; // 경과한 실제 시간
     private int gameHours = 8; // 시작 시간 (아침 8시)
     private int gameMinutes = 0; // 시작 분
-    private int currentDay = 1; // Day 초기값
     private const float secondsPerGameHour = 10f; // 한 시간에 10초
     private bool timerRunning = true; // 타이머 동작 상태
 
-    private const int startAlphaTime = 14; // Alpha 증가 시작 시간 (8시 PM)
-    private const int maxAlphaTime = 25; // Alpha 증가 종료 시간 (1시 AM)
+    private const int eveningStart = 17; // 오후 4시 (알파값 증가 시작)
+    private const int eveningEnd = 22; // 오후 10시 (알파값 증가 종료)
+    private const int morningStart = 5; // 오전 5시 (알파값 감소 시작)
+    private const int morningEnd = 8; // 오전 8시 (알파값 감소 종료)
+    private const float maxAlpha = 0.7f; // 알파 값 최대 (0~1 사이)
 
-    void Start()
+    private bool isBlinking = false;
+
+    private void Start()
     {
         UpdateDayDisplay(); // 초기 Day 표시
+        StartCoroutine(BlinkTimeText());
 
         // Alpha 조절 대상 초기화
         if (targetObject != null)
@@ -35,10 +40,29 @@ public class TimeManager : MonoBehaviour
             targetSpriteRenderer = targetObject.GetComponent<SpriteRenderer>();
         }
     }
-
-    void Update()
+    IEnumerator BlinkTimeText()
     {
-        if (!timerRunning) return; // 타이머가 멈췄으면 Update 중지
+        while (true)
+        {
+            if (isBlinking)
+            {
+                // 깜빡거림: 투명하게 만들기
+                txt.color = new Color(timeDisplay.color.r, timeDisplay.color.g, timeDisplay.color.b, 0);
+            }
+            else
+            {
+                // 깜빡거림: 원래 색으로 복원
+                txt.color = new Color(timeDisplay.color.r, timeDisplay.color.g, timeDisplay.color.b, 1);
+            }
+
+            isBlinking = !isBlinking; // 상태 전환
+            yield return new WaitForSeconds(0.25f); // 0.5초마다 깜빡거림
+        }
+    }
+
+    private void Update()
+    {
+        if (!timerRunning) return;
 
         // 경과 시간 업데이트
         elapsedTime += Time.deltaTime;
@@ -46,49 +70,41 @@ public class TimeManager : MonoBehaviour
         // 가상 시간 증가 로직
         if (elapsedTime >= secondsPerGameHour / 60f) // 1 "가상 분"마다 실행
         {
-            elapsedTime = 0f; // 초기화
-            gameMinutes += 1; // 1분 추가
+            elapsedTime = 0f;
+            gameMinutes++;
 
             if (gameMinutes >= 60) // 60분이 넘어가면
             {
-                gameMinutes = 0; // 분 초기화
-                gameHours += 1; // 1시간 추가
+                gameMinutes = 0;
+                gameHours++;
 
-                if (gameHours > 24) // 24시가 넘으면
+                if (gameHours >= 24) // 24시가 넘어가면
                 {
-                    gameHours = 1; // 1시로 초기화
-                    timerRunning = false; // 타이머 정지
-                    currentDay += 1; // Day 증가
-                    UpdateDayDisplay(); // Day 업데이트
+                    gameHours = 0;
+                    Day++;
+                    UpdateDayDisplay(); // Day 증가
                 }
             }
 
-            // 시간 업데이트
-            UpdateTimeDisplay();
+            UpdateTimeDisplay(); // 시간 업데이트
         }
 
         UpdateAlphaValue(); // Alpha 값 업데이트
+        UpdateTextColor(); // 텍스트 색상 업데이트
     }
 
-    void UpdateTimeDisplay()
+    private void UpdateTimeDisplay()
     {
-        // 오전/오후 표시
         string period = gameHours < 12 ? "AM" : "PM";
-
-        // 12시간제로 변환 (0시는 12시로 표시)
         int displayHours = gameHours % 12;
         if (displayHours == 0) displayHours = 12;
 
-        // 시간 문자열 업데이트
-        timeDisplay.text = string.Format("{0:00}:{1:00} {2}", displayHours, gameMinutes, period);
-        timeDisplay.color = Color.white;
-        txt.color = Color.white;
-        dayDisplay.color = Color.white;
+        timeDisplay.text = string.Format("{0:00} {1:00} {2}", displayHours, gameMinutes, period);
     }
 
-    void UpdateDayDisplay()
+    private void UpdateDayDisplay()
     {
-        dayDisplay.text = "Day " + currentDay;
+        dayDisplay.text = "Day " + Day;
     }
 
     /// <summary>
@@ -100,22 +116,21 @@ public class TimeManager : MonoBehaviour
 
         float alpha = 0f;
 
-        // 8시 PM (20) 이후부터 Alpha 값 증가 시작
-        if (gameHours >= startAlphaTime || (gameHours >= 0 && gameHours <= 1))
+        if (gameHours >= eveningStart && gameHours <= eveningEnd)
         {
-            if (gameHours == 1) // 1시일 때 Alpha는 최대
-            {
-                alpha = 255f;
-            }
-            else if (gameHours >= startAlphaTime)
-            {
-                // Alpha 값은 (현재 시간 - 시작 시간) / (종료 시간 - 시작 시간)
-                alpha = Mathf.Clamp01((float)(gameHours - startAlphaTime) / (maxAlphaTime - startAlphaTime));
-            }
-            else if (gameHours >= 0 && gameHours <= 1) // 자정 이후 Alpha 유지
-            {
-                alpha = 255f;
-            }
+            // 오후 4시부터 오후 10시까지 Alpha 값 증가
+            alpha = Mathf.InverseLerp(eveningStart, eveningEnd, gameHours) * maxAlpha;
+        }
+        else if (gameHours > eveningEnd || gameHours < morningStart)
+        {
+            // 오후 10시 이후 ~ 오전 5시까지 Alpha 값 유지
+            alpha = maxAlpha;
+        }
+        else if (gameHours >= morningStart && gameHours < morningEnd)
+        {
+            // 오전 5시부터 오전 8시까지 Alpha 값 감소
+            alpha = Mathf.InverseLerp(morningEnd, morningStart, gameHours) * maxAlpha;
+            alpha = maxAlpha - alpha; // 감소
         }
 
         // Alpha 값 적용
@@ -132,17 +147,30 @@ public class TimeManager : MonoBehaviour
             targetSpriteRenderer.color = color;
         }
     }
+
+    private void UpdateTextColor()
+    {
+        if (gameHours >= eveningStart || gameHours < morningStart)
+        {
+            // 오후 4시 이후 ~ 오전 5시까지 텍스트 하얗게
+            timeDisplay.color = Color.white;
+            txt.color = Color.white;
+            dayDisplay.color = Color.white;
+        }
+        else
+        {
+            // 오전 5시 이후 텍스트 검정색
+            timeDisplay.color = Color.black;
+            txt.color = Color.black;
+            dayDisplay.color = Color.black;
+        }
+    }
+
     public void RestartTimer()
     {
-        // 타이머를 다시 시작할 때 호출
         timerRunning = true;
         gameHours = 8; // 아침 8시로 초기화
         gameMinutes = 0; // 분 초기화
         UpdateTimeDisplay();
-        timeDisplay.color = Color.black;
-        txt.color = Color.black;
-        dayDisplay.color = Color.black;
-        Color color=targetSpriteRenderer.color;
-        color.a = 0f;
     }
 }
