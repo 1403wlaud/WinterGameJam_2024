@@ -6,6 +6,7 @@ using UnityEngine;
 public class NoteSO : ScriptableObject
 {
     [SerializeField] private string NoteContents;
+    public int QNoteDay;
 
     public string NoteContents_SO=>NoteContents;
 }

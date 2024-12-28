@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NoteContents: "\uC6D0\uC774 \uB2E4 \uC790\uB77C\uB294 \uBC24\uC5D0 \uBC16\uC73C\uB85C
     \uB098\uAC00\uBA74 ###\uC5D0 \uD729\uC4F8\uB824. \uBC24\uC5D0 \uB098\uAC00\uC9C0\uB9C8!"
+  QNoteDay: 5

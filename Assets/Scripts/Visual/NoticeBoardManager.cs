@@ -6,10 +6,15 @@ using UnityEngine.UI;
 public class NoticeBoardManager : MonoBehaviour
 {
     public GameObject QuestBordPrefab;
+    public GameObject NoteContents;
+    public NoteSO[] noteSOs;
+    public Transform NoteInstanPos;
     public Transform InstancePos;
     public TimeManager timeManager;
     public ItemInventory playerInventory;
     public GameObject text;
+
+    private List<GameObject> Notes = new List<GameObject>();
 
     private List<GameObject> activeQuestBoards = new List<GameObject>();
     [SerializeField] private List<SCTOBJQuest> quests;
@@ -21,15 +26,41 @@ public class NoticeBoardManager : MonoBehaviour
         CheckForNewQuests(); //퀘스트 확인
 
         //UI업데이트
-        if(activeQuestBoards.Count > 0)
-            for(int i = 0; i < activeQuestBoards.Count; i++)
-                for(int j = 0;j<quests.Count; j++)
-                    if(i==j) UpdateQuestBoardUI(activeQuestBoards[i], quests[j]);
+        if (activeQuestBoards.Count > 0)
+            for (int i = 0; i < activeQuestBoards.Count; i++)
+                for (int j = 0; j < quests.Count; j++)
+                    if (i == j) UpdateQuestBoardUI(activeQuestBoards[i], quests[j]);
 
-        if (activeQuestBoards.Count==0)
+        if (activeQuestBoards.Count == 0)
             text.gameObject.SetActive(true);
         else
-            text.gameObject.SetActive(false);   
+            text.gameObject.SetActive(false);
+
+        if (activeQuestBoards.Count > 0)
+        {
+            for (int i = 0; i < activeQuestBoards.Count; i++)
+            {
+                if (activeQuestBoards[i].GetComponent
+                    <QuestBoardController>().QuestClearDay
+                    == noteSOs[i].QNoteDay)
+                {
+                    GameObject gameObject_ = Instantiate(NoteContents, NoteInstanPos);
+                    Notes.Add(gameObject_);
+                    activeQuestBoards[i].GetComponent
+                    <QuestBoardController>().QuestClearDay = 0;
+                }
+
+            }
+        }
+
+        if(Notes.Count > 0)
+            for (int i = 0; i < Notes.Count; i++)
+        {
+            for (int j = 0; j < noteSOs.Length; j++)
+            {
+                if (i == j) Notes[i].GetComponent<Text>().text = noteSOs[j].NoteContents_SO;
+            }
+        }     
     }
 
     private void CheckForNewQuests()
@@ -61,7 +92,7 @@ public class NoticeBoardManager : MonoBehaviour
                 }
 
                 // UI 초기화는 UpdateQuestBoardUI로 처리
-                
+
                 activeQuestBoards.Add(questBoard);
             }
         }

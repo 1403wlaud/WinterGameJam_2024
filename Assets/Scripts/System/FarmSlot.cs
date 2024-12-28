@@ -61,7 +61,7 @@ public class FarmSlot : MonoBehaviour
         UpdatePlantSprite(daysSincePlanted);
 
         // 최종적으로 작물이 완전히 자랐는지 확인
-        if (daysSincePlanted >= currentSeed.Seed_TimeTaken && waterScore >= 10)
+        if (daysSincePlanted >= currentSeed.Seed_TimeTaken && waterScore >= 3)
         {
             foreach (var item in items)
             {

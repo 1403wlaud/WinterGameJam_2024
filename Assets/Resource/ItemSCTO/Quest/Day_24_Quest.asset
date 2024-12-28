@@ -16,8 +16,8 @@ MonoBehaviour:
   NeedObj: {fileID: 11400000, guid: 87f1b746e3fd4b0498666cfb7967e13f, type: 2}
   NeedItemCount: 8
   RewardMoney: 300
-  CharacterFaceImg: {fileID: 21300000, guid: 8e70eb8198d617441aa38d293bdebe11, type: 3}
-  CharacterName: 
+  CharacterFaceImg: {fileID: 21300000, guid: 7a18a0d694e0ad64e8f90dc7d27d0c24, type: 3}
+  CharacterName: D
   CheckQuest: 0
   RewardItem: {fileID: 0}
   ItemCount: 0

@@ -14,6 +14,9 @@ public class QuestBoardController : MonoBehaviour
     public Button RewardButton;
     public Image ClearImage;
 
+    [HideInInspector]
+    public int QuestClearDay;
+
     private ItemInventory playerInventory;
     private void Start()
     {
@@ -120,6 +123,8 @@ public class QuestBoardController : MonoBehaviour
 
             // ΩΩ∑‘ µø±‚»≠
             playerInventory.SyncSlotsWithInventory();
+
+            QuestClearDay = AssignedQuest.Q_Day;
         }
     }
 

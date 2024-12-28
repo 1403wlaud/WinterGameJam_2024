@@ -17,7 +17,7 @@ MonoBehaviour:
   NeedItemCount: 5
   RewardMoney: 550
   CharacterFaceImg: {fileID: 21300000, guid: f67f4fdb281d79147bcf715b06cf93f9, type: 3}
-  CharacterName: 
+  CharacterName: E
   CheckQuest: 0
   RewardItem: {fileID: 0}
   ItemCount: 0
